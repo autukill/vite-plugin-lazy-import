@@ -106,7 +106,9 @@ export function lazyImport (options: LazyImportConfig): Plugin<any> {
   }
 
   function toVariableExport (impCode: string) {
-    const rest = impCode.replace(/\n/, ' ').match(/\{[a-zA-Z,_'"\s]+?\}/)
+    // 替换 '//' 开头的整行为空字符串
+    let rest = impCode.replace(/^\s*\/\/.*$/gm, '');
+    rest = impCode.replace(/\n/g, ' ').match(/\{[a-zA-Z,_'"\s]+?\}/)
     if (rest) {
       return `export ${rest[0]}`
     }
